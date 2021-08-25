@@ -22,22 +22,19 @@ module.exports = {
                     reject(err);
                 } else {
                     if (!results.length > 0) {
-                        reject({
-                            message: "Usuário ou Senha Incorretos."
-                        });
+                        reject("Usuário ou Senha Incorretos.");
                     } else {
                         let row = results[0];
 
                         if (row.password !== password) {
-                            reject({
-                                message: "Usuário ou Senha Incorretos."
-                            });
+                            reject("Usuário ou Senha Incorretos.");
                         } else {
-                            resolve(row)
+                            resolve(row);
                         }
                     }
                 }
             });
+            
         });
 
     }
