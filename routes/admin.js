@@ -92,7 +92,7 @@ router.get('/reservations', function (req, res, next) {
 router.get('/menus', function (req, res, next) {
 
     menus.getMenus().then(data => {
-        
+
         res.render("admin/menus", getParams(req, {
             data
         }));
@@ -101,7 +101,11 @@ router.get('/menus', function (req, res, next) {
 });
 
 router.post("/menus", function (req, res, next) {
-    res.send(req.body);
+    menus.save(req.fields, req.files).then(results => {
+        res.send(results);
+    }).catch(err => {
+        res.send(err);
+    });
 });
 
 router.get('/emails', function (req, res, next) {
