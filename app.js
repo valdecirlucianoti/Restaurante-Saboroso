@@ -16,20 +16,20 @@ var app = express();
 
 app.use(function (req, res, next) {
 
-  if(req.method === 'POST'){
+  if (req.method == 'post') {
 
     var form = formidable.IncomingForm({
       uploadDir: path.join(__dirname, "/public/images"),
       keepExtensions: true
     });
-  
+
     form.parse(req, function (err, fields, files) {
       req.fields = fields;
       req.files = files;
       next();
     });
 
-  }else{
+  } else {
     next();
   }
   
@@ -47,6 +47,7 @@ app.use(
     saveUninitialized: true
   })
 );
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
