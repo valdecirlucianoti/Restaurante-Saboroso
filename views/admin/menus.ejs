@@ -144,6 +144,7 @@
 <%- include('inc/footer') -%>
 
 <script src="/js/hcode-filereader.js"></script>
+<script src="/js/hcode-formsave.js"></script>
 
 
 <script>
@@ -151,42 +152,47 @@
   new HcodeFileReader("#modal-update [type=file]", "#modal-update img");
 
   let formCreate = document.querySelector('#modal-create form');
-  
-  formCreate.addEventListener('submit', e => {
 
-    e.preventDefault();
-
-    let formData = new FormData(formCreate);
-
-    fetch( "/admin/menus", {
-        method: 'POST',
-        body: formData
-    })
-        .then(response => response.json())
-        .then(json => {
-          window.location.reload();
-        });
-
+  formCreate.save().then(json => {
+    window.location.reload();
+  }).catch(err => {
+    console.error(err);
   });
 
   let formUpdate = document.querySelector('#modal-update form');
 
-  formUpdate.addEventListener('submit', e => {
+  formUpdate.save().then(json => {
+    window.location.reload();
+  }).catch(err => {
+    console.error(err);
+  });
 
-    e.preventDefault();
+  [...document.querySelectorAll('.btn-delete')].forEach(btn => {
 
-    let formData = new FormData(formUpdate);
+    btn.addEventListener('click', e => {
 
-    fetch( "/admin/menus", {
-        method: 'POST',
-        body: formData
-    })
-        .then(response => response.json())
+      let tr = e.path.find(el => {
+        return (el.tagName.toUpperCase() === 'TR');
+      });
+
+      let data = JSON.parse(tr.dataset.row);
+
+      if(confirm(`Deseja Realmente EXCLUIR o prato ${data.title}?`)){
+        fetch(`/admin/menus/${data.id}`, {
+          method: 'DELETE'
+        })
+        .then(respose => respose.json())
         .then(json => {
-          //window.location.reload();
+          window.location.reload();
+        })
+        .catch(err => {
+          console.error(err);
         });
+      }
 
-});
+    });
+
+  });
 
   [...document.querySelectorAll('.btn-update')].forEach(btn => {
 
@@ -199,6 +205,7 @@
       let data = JSON.parse(tr.dataset.row);
 
       for (const name in data) {
+
         switch (name) {
           case 'photo':
             console.log(data[name]);
@@ -210,6 +217,7 @@
             if(input) input.value = data[name];
             break;
         }
+
       }
 
       $('#modal-update').modal('show');

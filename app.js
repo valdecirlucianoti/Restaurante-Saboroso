@@ -16,23 +16,29 @@ var app = express();
 
 app.use(function (req, res, next) {
 
-  if (req.method == 'post') {
-
-    var form = formidable.IncomingForm({
-      uploadDir: path.join(__dirname, "/public/images"),
-      keepExtensions: true
-    });
-
-    form.parse(req, function (err, fields, files) {
-      req.fields = fields;
-      req.files = files;
-      next();
-    });
-
-  } else {
+  if (req.url == '/admin/login') {
     next();
+  } else {
+    
+    if (req.url == '/admin/menus' && req.method == 'POST') {
+
+      var form = formidable({
+        uploadDir: path.join(__dirname, "/public/images"),
+        keepExtensions: true
+      });
+
+      form.parse(req, (err, fields, files) => {
+        req.body = fields;
+        req.fields = fields;
+        req.files = files;
+        next();
+      });
+
+    } else {
+      next();
+    }
   }
-  
+
 });
 
 // view engine setup
