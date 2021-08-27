@@ -1,8 +1,9 @@
 var conn = require('./../inc/db');
 var express = require('express');
 var users = require('./../inc/users');
-var admin = require('../inc/admin');
-var menus = require('../inc/menus');
+var admin = require('./../inc/admin');
+var menus = require('./../inc/menus');
+var reservations = require('../inc/reservations');
 
 const { getParams } = require('../inc/admin');
 
@@ -81,13 +82,41 @@ router.get('/users', function (req, res, next) {
 
 });
 
+//Inicio das rotas relecionadas as Reservas
+
 router.get('/reservations', function (req, res, next) {
 
-    res.render("admin/reservations", getParams(req, {
-        date: {}
-    }));
+    reservations.getReservations().then(data => {
+
+        res.render("admin/reservations", getParams(req, {
+            date: {},
+            data: data
+        }));
+
+    });
+    
 
 });
+
+router.post("/reservations", function (req, res, next) {
+    reservations.save(req.fields, req.files)
+    .then(results => {
+        res.send(results);
+    }).catch(err => {
+        res.send(err);
+    });
+});
+
+router.delete("/reservations/:id", function (req, res, next) {
+    reservations.delete(req.params.id)
+    .then(results => {
+        res.send(results);
+    }).catch(err => {
+        res.send(err);
+    });
+});
+
+//FIM das rotas relecionadas as Reservas
 
 router.get('/menus', function (req, res, next) {
 

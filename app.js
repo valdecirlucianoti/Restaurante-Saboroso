@@ -20,7 +20,7 @@ app.use(function (req, res, next) {
     next();
   } else {
     
-    if (req.url == '/admin/menus' && req.method == 'POST') {
+    if (req.method == 'POST') {
 
       var form = formidable({
         uploadDir: path.join(__dirname, "/public/images"),
