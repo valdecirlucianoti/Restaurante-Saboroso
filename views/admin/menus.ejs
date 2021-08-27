@@ -102,7 +102,7 @@
     <div class="modal fade" id="modal-update">
       <div class="modal-dialog">
         <div class="modal-content" style="border-top: 3px solid #00c0ef;">
-          <form action="/admin/menus" method="post">
+          <form action="/admin/menus" method="POST">
             <input type="hidden" name="id">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -144,20 +144,49 @@
 <%- include('inc/footer') -%>
 
 <script src="/js/hcode-filereader.js"></script>
-<script src="/js/hcode-formsave.js"></script>
+
 
 <script>
   new HcodeFileReader("#modal-create [type=file]", "#modal-create img");
   new HcodeFileReader("#modal-update [type=file]", "#modal-update img");
-  let formCreate = document.querySelector('#modal-create form');
 
-  formCreate.save().then(json => {
-    window.location.reload();
-  }).catch(err => {
-    console.error(err);
+  let formCreate = document.querySelector('#modal-create form');
+  
+  formCreate.addEventListener('submit', e => {
+
+    e.preventDefault();
+
+    let formData = new FormData(formCreate);
+
+    fetch( "/admin/menus", {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(json => {
+          window.location.reload();
+        });
+
   });
 
   let formUpdate = document.querySelector('#modal-update form');
+
+  formUpdate.addEventListener('submit', e => {
+
+    e.preventDefault();
+
+    let formData = new FormData(formUpdate);
+
+    fetch( "/admin/menus", {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(json => {
+          //window.location.reload();
+        });
+
+});
 
   [...document.querySelectorAll('.btn-update')].forEach(btn => {
 

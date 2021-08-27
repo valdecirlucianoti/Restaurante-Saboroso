@@ -101,7 +101,8 @@ router.get('/menus', function (req, res, next) {
 });
 
 router.post("/menus", function (req, res, next) {
-    menus.save(req.fields, req.files).then(results => {
+    menus.save(req.fields, req.files)
+    .then(results => {
         res.send(results);
     }).catch(err => {
         res.send(err);
