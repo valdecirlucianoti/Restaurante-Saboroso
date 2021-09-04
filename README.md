@@ -46,6 +46,17 @@ https://www.mysql.com/downloads/
 Para configura-lo é necessário acessar o arquivo `Instructions.sql` na pasta raiz do projeto.
 Utilize as instruções SQL que existem no arquivo para configurar o mesmo.
 
+Realize as modificações necessarias no arquivo ´inc/db.js´
+
+```
+const connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'seu-usuario',
+    database: 'restaurante',
+    password: 'sua-senha'
+  });
+```
+
 ### Esta aplicação utiliza: 
 
 Javascript, NODEjs, NPM, Bower, HTML5 (SVG e Canvas), CSS3 e GIT
