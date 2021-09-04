@@ -1,16 +1,19 @@
-var conn = require('./../inc/db');
 var express = require('express');
 var users = require('./../inc/users');
 var admin = require('./../inc/admin');
 var menus = require('./../inc/menus');
 var reservations = require('../inc/reservations');
-
-const { getParams } = require('../inc/admin');
+var contacts = require('../inc/contacts');
+var emails = require('../inc/emails');
+var moment = require('moment');
+moment.locale("pt-BR");
 
 var router = express.Router();
 
 router.use((req, res, next) => {
 
+    console.log('MIDWAY');
+    
     if (['/login'].indexOf(req.url) === -1 && (req.session && !req.session.user)) {
         res.redirect('/admin/login');
     } else {
@@ -39,7 +42,7 @@ router.get('/', (req, res, next) => {
 
     admin.dashboard().then(data => {
 
-        res.render('admin/index', getParams(req, {
+        res.render('admin/index', admin.getParams(req, {
             data: data
         }));
 
@@ -78,19 +81,58 @@ router.get("/login", function (req, res, next) {
 
 router.get('/users', function (req, res, next) {
 
-    res.render("admin/users", getParams(req));
+    users.getUsers().then(data => {
+        res.render("admin/users", admin.getParams(req, {
+            data
+        }));
+    }).catch(err => {
+        res.send(err);
+    });
 
 });
 
-//Inicio das rotas relecionadas as Reservas
+router.post('/users/password-change', function (req, res, next) {
+
+    users.changePassword(req).then(results => {
+        res.send(results);
+    }).catch(err => {
+        res.send({
+            error: err
+        });
+    });
+
+});
+
+router.post('/users', function (req, res, next) {
+
+    users.save(req.fields).then(results => {
+        res.send(results);
+    }).catch(err => {
+        res.send(err);
+
+    });
+
+});
+
+router.delete('/users/:id', function (req, res, next) {
+
+    users.delete(req.params.id).then(results => {
+        res.send(results);
+    }).catch(err => {
+        res.send(err);
+
+    });
+
+});
 
 router.get('/reservations', function (req, res, next) {
 
     reservations.getReservations().then(data => {
 
-        res.render("admin/reservations", getParams(req, {
+        res.render("admin/reservations", admin.getParams(req, {
             date: {},
-            data: data
+            data: data,
+            moment
         }));
 
     });
@@ -116,13 +158,11 @@ router.delete("/reservations/:id", function (req, res, next) {
     });
 });
 
-//FIM das rotas relecionadas as Reservas
-
 router.get('/menus', function (req, res, next) {
 
     menus.getMenus().then(data => {
 
-        res.render("admin/menus", getParams(req, {
+        res.render("admin/menus", admin.getParams(req, {
             data
         }));
     });
@@ -149,13 +189,38 @@ router.delete("/menus/:id", function (req, res, next) {
 
 router.get('/emails', function (req, res, next) {
 
-    res.render("admin/emails", getParams(req));
+    emails.getEmails().then(data =>{
+        res.render("admin/emails", admin.getParams(req, {
+            data
+        }));
+    });
+
+});
+
+router.delete('/emails/:id', function (req, res, next) {
+
+    emails.delete(req.params.id).then(results =>{
+        res.send(results);
+    }).catch(err => {
+        res.send(err);
+    });
 
 });
 
 router.get('/contacts', function (req, res, next) {
+    contacts.getContacts().then(data =>{
+        res.render("admin/contacts", admin.getParams(req, {
+            data
+        }));
+    });
+});
 
-    res.render("admin/contacts", getParams(req));
+router.delete('/contacts/:id', function (req, res, next) {
+    contacts.delete(req.params.id).then(results =>{
+        res.send(results);
+    }).catch(err => {
+        res.send(err);
+    });
 
 });
 

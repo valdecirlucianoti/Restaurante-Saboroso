@@ -8,7 +8,7 @@ module.exports = {
         return new Promise((resolve, reject) => {
 
             conn.query(`
-                SELECT * FROM tb_menus ORDER BY title`,
+                SELECT * FROM tb_menus ORDER BY id`,
                 (err, results) => {
                     if (err) {
                         reject(err);
@@ -21,7 +21,7 @@ module.exports = {
     },
 
     save(fields, files) {
-        
+
         return new Promise((resolve, reject) => {
 
             fields.photo = `images/${path.parse(files.photo.path).base}`;
@@ -41,8 +41,6 @@ module.exports = {
 
             if (parseInt(fields.id) > 0) {
 
-                console.info('update');
-
                 params.push(fields.id);
 
                 sql = `
@@ -54,15 +52,12 @@ module.exports = {
                     WHERE id = ?
                 `;
 
-                console.log("sql",sql);
-                
             } else {
                 
-                if(!fields.photo.name){
+                if(!files.photo.name){
                     console.log('Envie a foto do prato');
                     reject('Envie a foto do prato');
                 }else{
-                    console.info('create');
                     sql = "INSERT INTO tb_menus (title, description, price, photo) VALUES(?,?,?,?)";
                 }
 
@@ -71,10 +66,8 @@ module.exports = {
             conn.query(sql, params, (err, results) => {
 
                 if (err) {
-                    console.error(err);
                     reject(err);
                 } else {
-                    console.error('sucess');
                     resolve(results);
                 }
             });

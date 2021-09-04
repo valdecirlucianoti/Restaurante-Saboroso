@@ -6,7 +6,7 @@ module.exports = {
         res.render('contact', {
             title: 'Contato - Restaurante Saboroso!',
             background: 'images/img_bg_3.jpg',
-            h1: 'Diga um Olá!',
+            h1: 'Digaaa um Olá!',
             body: req.body,
             error,
             success,
@@ -15,7 +15,7 @@ module.exports = {
     },
 
     save(fields) {
-
+        
         return new Promise((resolve, reject) => {
 
             conn.query(`
@@ -35,6 +35,38 @@ module.exports = {
 
         });
 
+    },
+
+    getContacts() {
+
+        return new Promise((resolve, reject) => {
+
+            conn.query(`
+                SELECT * FROM tb_contacts ORDER BY register DESC`,
+                (err, results) => {
+                    if (err) {
+                        reject(err);
+                    }
+                    resolve(results);
+                });
+
+        });
+
+    },
+
+    delete(id) {
+
+        return new Promise((resolve, reject) => {
+
+            conn.query(`DELETE FROM tb_contacts WHERE id=?`, [id], (err, results) => {
+                if (err) {
+                    reject(err);
+                }
+                resolve(results);
+            });
+
+        });
+        
     }
 
 };

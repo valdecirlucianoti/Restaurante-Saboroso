@@ -1,8 +1,8 @@
 # Projeto Restaurante-Saboroso
 
-(https://www.hcode.com.br)
+(linkedin.com/in/valdecir-luciano-da-silva-4b137010a/)
 
-Projeto desenvolvido como exemplo do Curso Completo de JavaScript na Udemy.com.
+Projeto Restaurante
 Link heroku:
 
 Esta aplicação tem como fim treinamento da linguagem Javascript e NODEjs.
@@ -46,4 +46,4 @@ Lista de recursos usados em aula para este projeto
 
 
 ## Projeto
-![Restaurante-Saboroso](https://)
+![Restaurante](https://)

@@ -1,8 +1,11 @@
-var conn = require('./../inc/db');
 var express = require('express');
 var menus = require('./../inc/menus');
-var reservations = require('./../inc/reservations');
-var contacts = require('./../inc/contacts');
+var reservations = require('../inc/reservations');
+var contacts = require('../inc/contacts');
+var emails = require('../inc/emails');
+
+var moment = require('moment');
+moment.locale("pt-BR");
 
 var router = express.Router();
 var isHome = false;
@@ -22,13 +25,11 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/contacts', function (req, res, next) {
-
   contacts.render(req, res);
-
 });
 
 router.post('/contacts', function (req, res, next) {
-  
+
   if (!req.body.name) {
     contacts.render(req, res, "Digite o nome");
   } else if (!req.body.email) {
@@ -69,7 +70,7 @@ router.get('/menus', function (req, res, next) {
 
 });
 
-router.get('/reservations', function (req, res, next) {
+router.get('/reservations', function (req, res, next) {  
   reservations.render(req, res);
 });
 
