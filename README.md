@@ -75,6 +75,7 @@ Lista de recursos usados em aula para este projeto
 | Formidable | https://www.npmjs.com/package/formidable |
 | Redis | https://www.npmjs.com/package/redis-cli |
 | Nodemon | https://www.npmjs.com/package/nodemon |
+| Chart.js | https://www.chartjs.org/ |   
 
 
 ## Projeto
