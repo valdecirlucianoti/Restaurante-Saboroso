@@ -5,6 +5,7 @@ var contacts = require('../inc/contacts');
 var emails = require('../inc/emails');
 
 var moment = require('moment');
+const { connect } = require('../inc/db');
 moment.locale("pt-BR");
 
 var router = express.Router();
@@ -70,7 +71,7 @@ router.get('/menus', function (req, res, next) {
 
 });
 
-router.get('/reservations', function (req, res, next) {  
+router.get('/reservations', function (req, res, next) {
   reservations.render(req, res);
 });
 
@@ -111,6 +112,16 @@ router.get('/services', function (req, res, next) {
     background: 'images/img_bg_1.jpg',
     h1: 'É um prazer poder servir!',
     isHome
+  });
+
+});
+
+router.post('/subscribe', function (req, res, next) {
+  console.log('POST');
+  emails.save(req).then(results => {
+    res.send(results);
+  }).catch(err => {
+    res.send(err);
   });
 
 });

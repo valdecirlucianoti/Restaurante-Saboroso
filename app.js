@@ -16,26 +16,21 @@ var app = express();
 
 app.use(function (req, res, next) {
 
-  if (req.url == '/admin/login') {
-    next();
-  } else {
+  if(req.method === 'POST' && ['/admin/menus', '/subscribe'].indexOf(req.url) > -1){
+    var form = formidable({
+      multiples: true,
+      uploadDir: path.join(__dirname, "/public/images"),
+      keepExtensions: true
+    });
     
-    if (req.method === 'POST' && req.url == '/admin/menus') {
-      var form = formidable({
-        uploadDir: path.join(__dirname, "/public/images"),
-        keepExtensions: true
-      });
-
-      form.parse(req, (err, fields, files) => {
-        req.body = fields;
-        req.fields = fields;
-        req.files = files;
-        next();
-      });
-
-    } else {
+    form.parse(req, (err, fields, files) => {
+      req.body = fields;
+      req.fields = fields;
+      req.files = files;
       next();
-    }
+    });
+  }else{
+    next();
   }
 
 });
