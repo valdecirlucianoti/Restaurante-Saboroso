@@ -76,6 +76,7 @@ Lista de recursos usados em aula para este projeto
 | Redis | https://www.npmjs.com/package/redis-cli |
 | Nodemon | https://www.npmjs.com/package/nodemon |
 | Chart.js | https://www.chartjs.org/ |   
+| socket.io | https://socket.io/ | 
 
 
 ## Projeto
